@@ -9,6 +9,7 @@ var bgimg
 var tower, towerimg
 var cannon
 var angle = 20
+var cannonBall
 
 function preload() {
   bgimg = loadImage("./assets/background.gif");
@@ -34,7 +35,10 @@ function setup() {
   tower = Bodies.rectangle(160, 350, 160, 310, options)
   World.add(world, tower)
 
+  angleMode(DEGREES)
+  angle = 15
   cannon = new Cannon(180, 110, 130, 100, angle)
+  cannonBall = new CannonBall(cannon.x, cannon.y)
 }
 
 
@@ -53,5 +57,11 @@ function draw() {
   pop()
 
   cannon.display()
+  cannonBall.display()
 }
 
+function keyReleased() {
+if (keyCode===DOWN_ARROW) {
+cannonBall.shoot()  
+}
+}
