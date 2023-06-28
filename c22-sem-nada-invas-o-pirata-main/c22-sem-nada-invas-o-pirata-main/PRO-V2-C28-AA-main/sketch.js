@@ -9,7 +9,8 @@ var bgimg
 var tower, towerimg
 var cannon
 var angle = 20
-var cannonBall
+var balls=[]
+var boat
 
 function preload() {
   bgimg = loadImage("./assets/background.gif");
@@ -38,7 +39,8 @@ function setup() {
   angleMode(DEGREES)
   angle = 15
   cannon = new Cannon(180, 110, 130, 100, angle)
-  cannonBall = new CannonBall(cannon.x, cannon.y)
+  
+  boat=new Boat(width-79,height-60,170,170,-80)
 }
 
 
@@ -57,11 +59,29 @@ function draw() {
   pop()
 
   cannon.display()
-  cannonBall.display()
+  for (let i = 0; i < balls.length; i++) {
+   showCannonBalls(balls[i],i) 
+  }
+
+  boat.display()
+  Matter.Body.setVelocity(boat.body,{x:-0.9,y:0})
 }
 
 function keyReleased() {
 if (keyCode===DOWN_ARROW) {
-cannonBall.shoot()  
+balls[balls.length-1].shoot()  
 }
+}
+
+function keyPressed(){
+  if (keyCode===DOWN_ARROW) {
+    var cannonBall = new CannonBall(cannon.x, cannon.y)
+    balls.push(cannonBall)
+  }
+}
+
+function showCannonBalls(ball,i){
+if (ball) {
+  ball.display()
+}  
 }

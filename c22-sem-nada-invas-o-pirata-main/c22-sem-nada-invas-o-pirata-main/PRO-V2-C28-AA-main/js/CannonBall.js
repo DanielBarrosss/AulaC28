@@ -6,6 +6,7 @@ class CannonBall {
 
         this.r = 30
         this.image = loadImage("./assets/cannonball.png")
+        this.trajectore=[]
         this.body = Bodies.circle(x, y, this.r, opitons)
         World.add(world, this.body)
 
@@ -13,11 +14,24 @@ class CannonBall {
     }
 
     shoot(){
-    Matter.Body.setStatic(this.body,false)   
+    var newAngle=cannon.angle-28
+    newAngle=newAngle*(3.14/180)
+
+    var velocity=p5.Vector.fromAngle(newAngle)
+    velocity.mult(0.5)
+    Matter.Body.setStatic(this.body,false) 
+    Matter.Body.setVelocity(this.body,{x:velocity.x*(180/3.14),y:velocity.y*(180/3.14)})  
     }
 
     display(){
         var pos=this.body.position
+        if (this.body.velocity.x>0&&pos.x>300) {
+           var position =[pos.x,pos.y]
+           this.trajectore.push(position)
+           for(var i =0;i<this.trajectore.length;i++){
+            image(this.image,this.trajectore[i][0],this.trajectore[i][1],5,5)
+           }
+        }
 
         push()
         imageMode(CENTER)
